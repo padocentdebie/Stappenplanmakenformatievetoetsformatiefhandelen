@@ -7,11 +7,9 @@
         :root { --primary: #001f3f; --accent: #004080; --text: #333; --bg: #f4f7f9; --gemini-bg: #f0f4f8; }
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
         
-        /* Audio Nav */
         .audio-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; }
         .btn-audio { background: white; border: 1px solid #ccc; padding: 8px 15px; cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; }
         
-        /* Card Styles */
         .card { background: white; width: 800px; min-height: 580px; padding: 50px; border-radius: 4px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); position: relative; }
         .active { display: flex; animation: fade 0.4s ease-in-out; }
         
@@ -25,12 +23,10 @@
 
         .visual-guide-img { width: 100%; height: auto; border: 1px solid #ccc; margin: 15px 0; display: block; max-height: 200px; object-fit: contain; background: #fff; }
         
-        /* Voorbeeld Toets Simulatie */
         .gemini-sim { background: var(--gemini-bg); border: 1px solid #d1d9e0; padding: 20px; border-radius: 8px; margin: 15px 0; font-size: 14px; }
         .chat-bubble { background: #fff; padding: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .model-answer { color: #1a73e8; font-weight: bold; margin-top: 5px; display: block; }
 
-        /* Navigatie Knoppen */
         .nav-footer { margin-top: auto; display: flex; justify-content: flex-end; gap: 15px; padding-top: 20px; border-top: 1px solid #eee; }
         .btn { padding: 12px 30px; border: none; border-radius: 2px; cursor: pointer; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s; }
         .btn-next { background: var(--primary); color: white; }
@@ -49,77 +45,65 @@
     </div>
 
     <div class="card active" id="c1">
-        <h2>Introductie & Veiligheid</h2>
+        <h2>Doel</h2>
         <div class="goal-box">
-            Deze gids ondersteunt u bij het veilig maken van interactieve, formatieve toetsen met AI. U leert hoe u een krachtige opdracht geeft en de toets direct deelt met uw studenten.
+            Deze instructie stelt u in staat om binnen enkele minuten een interactieve, formatieve toets te genereren. Het doel is om zonder programmeerkennis een veilige en professionele leeromgeving te creëren voor studenten.
         </div>
         <div class="alert-box">
-            <strong>LET OP:</strong> Gebruik alleen een privé-account. Voer geen operationele namen of gevoelige politiedata in.
+            <strong>VEILIGHEID:</strong> Gebruik uitsluitend een privé-account. Voer geen operationele data of persoonsgegevens in.
         </div>
-        <img src="Screenshot 2026-03-18 10.52.45.png" alt="Veilig inloggen" class="visual-guide-img">
+        <img src="Screenshot 2026-03-18 10.52.45.png" alt="Inloggen" class="visual-guide-img">
         <div class="nav-footer">
-            <button class="btn btn-next" onclick="nextCard(2)">Bekijk de werkwijze</button>
+            <button class="btn btn-next" onclick="nextCard(2)">Naar de uitleg</button>
         </div>
     </div>
 
     <div class="card" id="c2">
-        <h2>De Prompt invoeren</h2>
-        <p>Typ de volgende <strong>opdrachtregel</strong> in de AI-omgeving om de toets te genereren:</p>
+        <h2>Uitleg: De opdracht geven</h2>
+        <p>Om de AI de juiste toets te laten maken, voert u een specifieke <strong>prompt</strong> (opdrachtregel) in:</p>
         <code>"Stel een korte toets samen voor politiestudenten over Artikel 9 van de Opiumwet. Maak 5 vragen met directe antwoorden en uitleg."</code>
-        <img src="Screenshot 2026-03-18 10.45.21.png" alt="Invoeren opdrachtregel" class="visual-guide-img">
+        <img src="Screenshot 2026-03-18 10.45.21.png" alt="Opdrachtregel" class="visual-guide-img">
         <div class="nav-footer">
             <button class="btn btn-prev" onclick="nextCard(1)">Terug</button>
-            <button class="btn btn-next" onclick="nextCard(3)">Bekijk voorbeeld resultaat</button>
+            <button class="btn btn-next" onclick="nextCard(3)">Bekijk het voorbeeld</button>
         </div>
     </div>
 
     <div class="card" id="c3">
-        <h2>Voorbeeld van de Toets</h2>
-        <p>De AI reageert direct met een kant-en-klare toets. Dit is wat de studenten te zien krijgen:</p>
+        <h2>Uitleg: Het resultaat</h2>
+        <p>De AI genereert direct een toets inclusief feedback. Dit is wat de student ziet:</p>
         <div class="gemini-sim">
             <div class="chat-bubble">
-                <strong>Vraag:</strong> Welke graad van verdenking is vereist voor een voertuigcontrole op basis van de Opiumwet?<br>
-                <em>A) Aanwijzing / B) Redelijk vermoeden / C) Ernstige bezwaren</em>
+                <strong>Vraag:</strong> Welke graad van verdenking is vereist voor een controle op basis van de Opiumwet?<br>
                 <span class="model-answer">Antwoord: B. Redelijk vermoeden (Art. 9 lid 1).</span>
             </div>
         </div>
-        <p>De AI geeft bij elk antwoord een korte juridische onderbouwing.</p>
+        <p>U kunt de AI altijd vragen om de tekst aan te passen of een casus toe te voegen.</p>
         <div class="nav-footer">
             <button class="btn btn-prev" onclick="nextCard(2)">Terug</button>
-            <button class="btn btn-next" onclick="nextCard(4)">Toets delen</button>
+            <button class="btn btn-next" onclick="nextCard(4)">Link genereren</button>
         </div>
     </div>
 
     <div class="card" id="c4">
-        <h2>De link delen</h2>
-        <p>U hoeft niets te kopiëren naar Word. Klik op het <strong>delen-teken</strong> onder het antwoord van de AI:</p>
-        <img src="Screenshot 2026-03-18 10.46.09.png" alt="Klik op delen" class="visual-guide-img">
+        <h2>Uitleg: Toets delen</h2>
+        <p>U deelt de toets door een link te genereren via het <strong>deel-teken</strong>:</p>
+        <img src="Screenshot 2026-03-18 10.46.09.png" alt="Delen" class="visual-guide-img">
         <ul>
-            <li>Kies voor 'Openbare link maken'.</li>
-            <li>Kopieer de gegenereerde link.</li>
+            <li>Klik op het icoon onder het antwoord.</li>
+            <li>Selecteer 'Openbare link maken'.</li>
+            <li>Kopieer de link voor gebruik in het LMS of e-mail.</li>
         </ul>
         <div class="nav-footer">
             <button class="btn btn-prev" onclick="nextCard(3)">Terug</button>
-            <button class="btn btn-next" onclick="nextCard(5)">Publiceren</button>
-        </div>
-    </div>
-
-    <div class="card" id="c5">
-        <h2>Gereed voor gebruik</h2>
-        <p>Plak de link in het LMS of verstuur deze per e-mail naar uw studenten.</p>
-        <p>De student klikt op de link en kan de toets direct maken op hun eigen apparaat.</p>
-        <div class="nav-footer">
-            <button class="btn btn-prev" onclick="nextCard(4)">Terug</button>
             <button class="btn btn-next" onclick="location.reload()">Afronden</button>
         </div>
     </div>
 
     <script>
         function nextCard(id) {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(c => c.classList.remove('active'));
-            const target = document.getElementById('c' + id);
-            if(target) target.classList.add('active');
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.getElementById('c' + id).classList.add('active');
         }
 
         function toggleMusic() {
