@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Protocol: Educatieve Toetsing via AI</title>
     <style>
-        :root { --primary: #001f3f; --accent: #004080; --text: #333; --bg: #f4f7f9; }
+        :root { --primary: #001f3f; --accent: #004080; --text: #333; --bg: #f4f7f9; --gemini-bg: #f0f4f8; --gemini-bubble: #fff; }
         body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
         
         /* Audio Control */
@@ -12,26 +12,34 @@
         .btn-audio { background: white; border: 1px solid #ccc; padding: 8px 15px; cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; }
         
         /* Card & Layout */
-        .card { background: white; width: 750px; min-height: 550px; padding: 50px; border-radius: 4px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); position: relative; }
+        .card { background: white; width: 800px; min-height: 600px; padding: 50px; border-radius: 4px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); position: relative; overflow-y: auto; }
         .active { display: flex; animation: fade 0.4s ease-in-out; }
         
-        h2 { color: var(--primary); font-weight: 300; text-transform: uppercase; letter-spacing: 2px; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 20px; }
-        .alert-box { background: #fdf2f2; border: 1px solid #f1abab; color: #a94442; padding: 20px; margin-bottom: 15px; font-size: 14px; line-height: 1.6; }
+        h2 { color: var(--primary); font-weight: 300; text-transform: uppercase; letter-spacing: 2px; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 18px; }
+        .alert-box { background: #fdf2f2; border: 1px solid #f1abab; color: #a94442; padding: 15px; margin-bottom: 15px; font-size: 14px; }
         p, li { font-size: 15px; line-height: 1.6; color: #555; margin-bottom: 10px; }
-        code { background: #f1f3f5; padding: 8px; border-radius: 4px; font-family: Consolas, monospace; font-size: 0.9em; display: block; border: 1px solid #e1e4e8; margin: 10px 0; color: #003366; }
+        code { background: #f1f3f5; padding: 8px; border-radius: 4px; font-family: monospace; font-size: 0.9em; display: block; border: 1px solid #e1e4e8; margin: 10px 0; color: #003366; }
 
         /* Visuele Gids */
-        .visual-guide-img { width: 100%; height: auto; border: 1px solid #ccc; margin: 15px 0; display: block; max-height: 250px; object-fit: contain; background: #fff; }
+        .visual-guide-img { width: 100%; height: auto; border: 1px solid #ccc; margin: 15px 0; display: block; max-height: 200px; object-fit: contain; background: #fff; }
         
+        /* GEMINI SIMULATIE STYLES */
+        .gemini-sim { background: var(--gemini-bg); border: 1px solid #d1d9e0; padding: 20px; border-radius: 8px; margin: 20px 0; font-family: 'Segoe UI', sans-serif; }
+        .gemini-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; border-bottom: 1px solid #d1d9e0; padding-bottom: 10px; }
+        .gemini-logo { width: 24px; height: 24px; background: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; color: #1a73e8; font-size: 14px; border: 1px solid #d1d9e0; }
+        .gemini-chat { display: flex; flex-direction: column; gap: 15px; }
+        .chat-bubble { background: var(--gemini-bubble); padding: 15px; border-radius: 12px; max-width: 90%; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .chat-bubble.user { align-self: flex-end; background: #e8f0fe; color: #174ea6; }
+        .chat-bubble h3 { margin-top: 0; color: #1a73e8; font-size: 16px; }
+        .chat-bubble h4 { margin: 10px 0 5px 0; color: #333; font-size: 14px; }
+        .chat-bubble ul { margin: 5px 0; padding-left: 20px; font-size: 13px; }
+        .model-answer { background: #f1f8ff; padding: 10px; border-left: 4px solid #1a73e8; margin-top: 10px; font-style: italic; font-size: 13px; color: #004085; }
+
         /* Navigatie */
         .nav-footer { margin-top: auto; display: flex; justify-content: flex-end; gap: 15px; padding-top: 20px; border-top: 1px solid #eee; }
-        .btn { padding: 12px 30px; border: none; border-radius: 2px; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        .btn { padding: 12px 30px; border: none; border-radius: 2px; cursor: pointer; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
         .btn-next { background: var(--primary); color: white; }
-        .btn-next:hover { background: var(--accent); }
         .btn-prev { background: #eee; color: #777; }
-
-        /* Deel icoon */
-        .share-icon-svg { width: 20px; vertical-align: middle; margin: 0 5px; }
 
         @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -50,65 +58,102 @@
         <div class="alert-box">
             <strong>BELANGRIJK:</strong> Gebruik <u>nooit</u> je politie-account voor AI. Gebruik een privé-account (bijv. Gmail) en voer geen geheime informatie in.
         </div>
-        <img src="Screenshot 2026-03-18 10.52.45.png" alt="Beveiliging" class="visual-guide-img">
+        <img src="afbeelding_beveiliging.png" alt="Beveiliging" class="visual-guide-img">
         <p>Zorg dat u bent ingelogd op uw persoonlijke omgeving voordat u verder gaat.</p>
         <div class="nav-footer">
-            <button class="btn btn-next" onclick="show(2)">Start gids</button>
+            <button class="btn btn-next" onclick="showStep(2)">Start gids</button>
         </div>
     </div>
 
     <div class="card" id="s2">
         <h2>Fase 2: De Prompt & Opdrachtregel</h2>
-        <p>Een <strong>prompt</strong> is simpelweg de opdracht die u typt. Kies een van de volgende opties:</p>
-        
-        <p><strong>Optie A: Kennisvragen</strong></p>
-        <code>"Maak een korte toets voor politiestudenten over Artikel 9 van de Opiumwet. Geef 5 vragen met directe antwoorden en uitleg."</code>
-        
-        <p><strong>Optie B: Praktijkcasus (Scenario)</strong></p>
-        <code>"Schrijf een casus over een voertuigcontrole waarbij hennepgeur wordt waargenomen. Stel 3 vragen over de juiste bevoegdheden volgens Artikel 9 Opiumwet en geef de juridische uitwerking."</code>
-        
-        <img src="Screenshot 2026-03-18 10.45.21.png" alt="Prompt invoeren" class="visual-guide-img">
-
+        <p>Gebruik de volgende <strong>opdrachtregel</strong> in de AI:</p>
+        <code>"Schrijf een casus over een voertuigcontrole waarbij hennepgeur wordt waargenomen. Stel 3 uitdagende vragen over de juiste bevoegdheden volgens Artikel 9 Opiumwet en geef de juridische uitwerking."</code>
+        <img src="afbeelding_prompt.png" alt="Prompt voorbeeld" class="visual-guide-img">
         <div class="nav-footer">
-            <button class="btn btn-prev" onclick="show(1)">Terug</button>
-            <button class="btn btn-next" onclick="show(3)">Volgende stap</button>
+            <button class="btn btn-prev" onclick="showStep(1)">Terug</button>
+            <button class="btn btn-next" onclick="showStep(3)">Volgende stap</button>
         </div>
     </div>
 
     <div class="card" id="s3">
-        <h2>Fase 3: De link delen</h2>
-        <p>Zodra de AI de toets heeft gemaakt, gebruikt u het <strong>delen-teken</strong> 
-            <img src="Screenshot 2026-03-18 10.46.09.png" class="share-icon-svg" alt="Deel icoon"> om een link te maken:
-        </p>
+        <h2>Fase 3: Het Resultaat in Gemini (Simulatie)</h2>
+        <p>De AI geeft nu de toets. Dit is een simulatie van hoe het resultaat verschijnt:</p>
         
-        <ul>
-            <li>Klik op het icoon onder het antwoord van de AI.</li>
-            <li>Kies voor "Openbare link maken" of "Link delen".</li>
-            <li>Kopieer de link die verschijnt.</li>
-        </ul>
+        <div class="gemini-sim">
+            <div class="gemini-header">
+                <div class="gemini-logo">G</div>
+                <span>Gemini (Training Assistent)</span>
+            </div>
+            <div class="gemini-chat">
+                <div class="chat-bubble user">
+                    <p>Schrijf een casus over een voertuigcontrole waarbij hennepgeur wordt waargenomen. Stel 3 vragen over Artikel 9 Opiumwet en geef de uitwerking.</p>
+                </div>
+                <div class="chat-bubble">
+                    <h3>Casus: De Hennepauto</h3>
+                    <p>Op een parkeerplaats die bekend staat om drugshandel, zie je een voertuig stilstaan. Bij het geopende raam neem je een sterke hennepgeur waar. Je vermoedt de aanwezigheid van drugs.</p>
+                    
+                    <h4>Vraag 1: Welke graad van verdenking is minimaal vereist voor het betreden van dit vervoermiddel (Art. 9 lid 1)?</h4>
+                    <ul>
+                        <li>A) Aanwijzing van een strafbaar feit</li>
+                        <li>B) Redelijk vermoeden van een strafbaar feit</li>
+                        <li>C) Ernstige bezwaren tegen de verdachte</li>
+                    </ul>
+                    <div class="model-answer">Uitwerking: B. Redelijk vermoeden is de basis voor lid 1.</div>
+
+                    <h4>Vraag 2: Mag een politieambtenaar op basis van Art. 9 lid 1 direct een woning binnentreden zonder toestemming?</h4>
+                    <ul>
+                        <li>A) Ja, mits hij een redelijk vermoeden heeft</li>
+                        <li>B) Nee, hiervoor is altijd een machtiging tot binnentreden vereist (AWBI)</li>
+                    </ul>
+                    <div class="model-answer">Uitwerking: B. De Opiumwet heft de woningbescherming niet op.</div>
+
+                    <h4>Vraag 3: Een agent vordert de uitlevering van een pakje dat hij uit een zak ziet steken. Welk lid geeft deze bevoegdheid?</h4>
+                    <ul>
+                        <li>A) Artikel 9, eerste lid</li>
+                        <li>B) Artikel 9, derde lid</li>
+                    </ul>
+                    <div class="model-answer">Uitwerking: B. Lid 3 regelt de inbeslagneming en vordering tot uitlevering.</div>
+                </div>
+            </div>
+        </div>
 
         <div class="nav-footer">
-            <button class="btn btn-prev" onclick="show(2)">Terug</button>
-            <button class="btn btn-next" onclick="show(4)">Laatste stap</button>
+            <button class="btn btn-prev" onclick="showStep(2)">Terug</button>
+            <button class="btn btn-next" onclick="showStep(4)">Volgende stap</button>
         </div>
     </div>
 
     <div class="card" id="s4">
-        <h2>Fase 4: Publicatie</h2>
-        <p>Plak de gekopieerde link direct in het LMS of in een e-mail naar de studenten.</p>
-        <p>De student klikt op de link en krijgt direct toegang tot de toets. U hoeft geen bestanden te versturen of code te kopiëren.</p>
-        
+        <h2>Fase 4: Delen via Link</h2>
+        <p>Zodra de AI de toets heeft gemaakt, gebruikt u het delen-teken om de toets naar studenten te sturen:</p>
+        <ul>
+            <li>Klik op het icoon onder het antwoord van de AI.</li>
+            <li>Kies 'Openbare link maken'.</li>
+        </ul>
+        <img src="afbeelding_delen.png" alt="Deel functie" class="visual-guide-img">
         <div class="nav-footer">
-            <button class="btn btn-prev" onclick="show(3)">Terug</button>
-            <button class="btn btn-next" onclick="location.reload()">Beëindigen</button>
+            <button class="btn btn-prev" onclick="showStep(3)">Terug</button>
+            <button class="btn btn-next" onclick="showStep(5)">Laatste stap</button>
+        </div>
+    </div>
+
+    <div class="card" id="s5">
+        <h2>Fase 5: Publicatie via Link</h2>
+        <p>U heeft nu de link. Plak deze link direct in het LMS of in een e-mail naar de studenten.</p>
+        <img src="afbeelding_publicatie.png" alt="Publicatie link" class="visual-guide-img">
+        <p>De student klikt op de link en krijgt direct toegang tot de interactieve toetsing zonder dat u bestanden hoeft te versturen.</p>
+        <div class="nav-footer">
+            <button class="btn btn-prev" onclick="showStep(4)">Terug</button>
+            <button class="btn btn-next" onclick="location.reload()">Sessie beëindigen</button>
         </div>
     </div>
 
     <script>
-        function show(id) {
+        function showStep(stepId) {
             const cards = document.querySelectorAll('.card');
-            cards.forEach(c => c.classList.remove('active'));
-            document.getElementById('s' + id).classList.add('active');
+            cards.forEach(card => card.classList.remove('active'));
+            document.getElementById('s' + stepId).classList.add('active');
         }
 
         function toggleMusic() {
