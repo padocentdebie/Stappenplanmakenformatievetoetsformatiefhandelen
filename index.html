@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Zelfcorrectie: Opiumwet Artikel 9</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f0f2f5; }
+        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h2 { color: #1a2a6c; border-bottom: 2px solid #1a2a6c; padding-bottom: 10px; }
+        .question-box { margin-bottom: 30px; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
+        textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        
+        .feedback { display: none; margin-top: 15px; padding: 15px; background-color: #e7f3fe; border-left: 6px solid #2196F3; font-style: italic; color: #0c5460; }
+        .correct-header { font-weight: bold; color: #1a2a6c; display: block; margin-bottom: 5px; text-decoration: underline; }
+        
+        button { background: #1a2a6c; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
+        button:hover { background: #0d1a4a; }
+        .btn-reset { background: #6c757d; margin-left: 10px; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Formatieve Toets: Bevoegdheden Opiumwet</h2>
+    <p><em>Casus: Je ziet een voertuig stilstaan en ruikt een sterke hennepgeur. Je vermoedt de aanwezigheid van drugs.</em></p>
+
+    <div class="question-box">
+        <label><strong>1. Welk lid van Artikel 9 geeft je de bevoegdheid om het voertuig te doorzoeken?</strong></label>
+        <textarea id="q1" placeholder="Typ je antwoord..."></textarea>
+        <div id="feedback1" class="feedback">
+            <span class="correct-header">Modelantwoord:</span>
+            Artikel 9, eerste lid, onder a van de Opiumwet. Dit geeft de bevoegdheid om vervoermiddelen te onderzoeken bij een redelijk vermoeden van een strafbaar feit uit deze wet.
+        </div>
+    </div>
+
+    <div class="question-box">
+        <label><strong>2. Mag je de bestuurder direct aan de kleding onderzoeken? Waarom wel/niet?</strong></label>
+        <textarea id="q2" placeholder="Typ je antwoord..."></textarea>
+        <div id="feedback2" class="feedback">
+            <span class="correct-header">Modelantwoord:</span>
+            Nee, niet direct op basis van alleen een 'redelijk vermoeden'. Voor onderzoek aan de kleding (Art. 9 lid 2) zijn 'ernstige bezwaren' nodig tegen de persoon. De hennepgeur uit de auto is vaak onvoldoende voor ernstige bezwaren tegen de persoon zelf, tenzij er meer aanwijzingen zijn.
+        </div>
+    </div>
+
+    <button onclick="checkAnswers()">Controleer antwoorden</button>
+    <button class="btn-reset" onclick="resetForm()">Wis alles</button>
+</div>
+
+<script>
+    function checkAnswers() {
+        // Toon de feedback velden
+        document.getElementById('feedback1').style.display = 'block';
+        document.getElementById('feedback2').style.display = 'block';
+        
+        // Sla de antwoorden op zodat ze niet verdwijnen bij verversen
+        localStorage.setItem('ans1', document.getElementById('q1').value);
+        localStorage.setItem('ans2', document.getElementById('q2').value);
+    }
+
+    function resetForm() {
+        if(confirm("Weet je zeker dat je alle invoer wilt wissen?")) {
+            localStorage.clear();
+            location.reload();
+        }
+    }
+
+    // Laad opgeslagen data bij opstarten
+    window.onload = function() {
+        if(localStorage.getItem('ans1')) {
+            document.getElementById('q1').value = localStorage.getItem('ans1');
+        }
+        if(localStorage.getItem('ans2')) {
+            document.getElementById('q2').value = localStorage.getItem('ans2');
+        }
+    }
+</script>
+
+</body>
+</html>
