@@ -2,129 +2,72 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Stappenplan: AI-Toets Ontwikkeling</title>
+    <title>Snelgids: Toets maken met AI</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #001a33; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
-        .card { background: #ffffff; color: #333; width: 80%; max-width: 800px; min-height: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: none; position: relative; flex-direction: column; justify-content: center; }
-        .active { display: flex; animation: fadeIn 0.5s; }
-        
-        h2 { color: #003366; border-bottom: 2px solid #003366; padding-bottom: 10px; }
-        .warning { background: #ffeded; border-left: 5px solid #cc0000; padding: 15px; color: #990000; font-weight: bold; margin: 20px 0; }
-        .step-number { position: absolute; top: 20px; right: 30px; font-size: 1.2em; color: #ccc; font-weight: bold; }
-        
-        .nav-buttons { margin-top: 30px; display: flex; gap: 10px; }
-        button { padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        body { font-family: 'Segoe UI', sans-serif; background: #001a33; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; color: #333; width: 600px; padding: 40px; border-radius: 15px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .active { display: flex; }
+        h2 { color: #003366; margin-top: 0; }
+        .warning { background: #ffeded; color: #cc0000; padding: 15px; border-left: 5px solid #cc0000; font-weight: bold; margin-bottom: 20px; }
+        .btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; }
         .btn-next { background: #003366; color: white; }
-        .btn-prev { background: #6c757d; color: white; }
-        
-        .audio-nav { position: fixed; top: 20px; left: 20px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; }
-        .btn-audio { background: #28a745; color: white; font-size: 12px; }
+        .btn-audio { position: fixed; top: 20px; left: 20px; background: #28a745; color: white; z-index: 100; }
         .btn-audio.off { background: #dc3545; }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        ul { line-height: 1.8; }
+        code { background: #eee; padding: 2px 5px; border-radius: 3px; }
     </style>
 </head>
 <body>
 
-    <div class="audio-nav">
-        <button id="musicBtn" class="btn-audio" onclick="toggleMusic()">🔊 Muziek: AAN</button>
-        <audio id="bgMusic" loop>
-            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
-        </audio>
-    </div>
+    <button id="audioBtn" class="btn-audio" onclick="toggleMusic()">🔊 Muziek: UIT</button>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
 
-    <div class="card active" id="step1">
-        <div class="step-number">Stap 1/5</div>
-        <h2>⚠️ Veiligheid & Privacy</h2>
+    <div class="card active" id="s1">
+        <h2>⚠️ STAP 1: Veiligheid</h2>
         <div class="warning">
-            BELANGRIJK: Maak voor AI-gebruik (zoals ChatGPT of Gemini) een privé-account aan dat GEEN enkele koppeling heeft met je politie-e-mail of politiesystemen.
+            GEBRUIK NOOIT JE POLITIE-ACCOUNT VOOR AI!
         </div>
-        <ul>
-            <li>Gebruik een privé Gmail of Outlook adres.</li>
-            <li>Voer nooit namen van verdachten, operationele details of geheime stukken in.</li>
-            <li>Gebruik AI alleen voor openbare wetteksten (zoals de Opiumwet).</li>
-        </ul>
-        <div class="nav-buttons">
-            <button class="btn-next" onclick="nextStep(2)">Ik begrijp het, start de gids</button>
-        </div>
+        <p>Maak een <strong>privé-account</strong> aan (bijv. een persoonlijke Gmail) voor ChatGPT of Gemini.</p>
+        <p>Deel <strong>geen</strong> namen van verdachten of interne korpsinformatie. Gebruik alleen openbare wetteksten.</p>
+        <button class="btn btn-next" onclick="show(2)">Ik begrijp het, volgende stap</button>
     </div>
 
-    <div class="card" id="step2">
-        <div class="step-number">Stap 2/5</div>
-        <h2>Ontwerp je Toets (De Prompt)</h2>
-        <p>Open je AI-tool en geef een duidelijke opdracht. Gebruik de "Rol-methode":</p>
-        <p><em>"Je bent een expert docent op de politieschool. Schrijf een HTML-code voor een formatieve toets over Artikel 9 Opiumwet. Gebruik LocalStorage om antwoorden te bewaren en voeg modelantwoorden toe voor zelfcorrectie."</em></p>
-        <div class="nav-buttons">
-            <button class="btn-prev" onclick="nextStep(1)">Terug</button>
-            <button class="btn-next" onclick="nextStep(3)">Volgende stap</button>
-        </div>
+    <div class="card" id="s2">
+        <h2>📝 STAP 2: Vraag het de AI</h2>
+        <p>Open de AI en typ simpelweg wat je nodig hebt. Bijvoorbeeld:</p>
+        <p><em>"Maak 5 uitdagende meerkeuzevragen voor politiestudenten over Artikel 9 van de Opiumwet. Geef daarna direct de juiste antwoorden met uitleg."</em></p>
+        <button class="btn btn-next" onclick="show(3)">Volgende stap</button>
     </div>
 
-    <div class="card" id="step3">
-        <div class="step-number">Stap 3/5</div>
-        <h2>Van Code naar Bestand</h2>
-        <p>Zodra de AI de code genereert, moet je deze 'tot leven' wekken:</p>
-        <ul>
-            <li>Kopieer de volledige code uit het AI-venster.</li>
-            <li>Open <strong>Kladblok</strong> (Notepad) op je computer.</li>
-            <li>Plak de code en sla het bestand op als: <code>toets.html</code>.</li>
-            <li><strong>Cruciaal:</strong> Zorg dat de naam eindigt op .html (niet op .txt).</li>
-        </ul>
-        <div class="nav-buttons">
-            <button class="btn-prev" onclick="nextStep(2)">Terug</button>
-            <button class="btn-next" onclick="nextStep(4)">Volgende stap</button>
-        </div>
+    <div class="card" id="s3">
+        <h2>✅ STAP 3: De AI geeft de toets</h2>
+        <p>De AI (zoals Gemini) zet de vragen en antwoorden direct voor je op het scherm.</p>
+        <p><strong>Check de inhoud:</strong> Klopt de juridische uitleg? Pas het aan waar nodig door simpelweg tegen de AI te praten.</p>
+        <button class="btn btn-next" onclick="show(4)">Laatste stap: Delen</button>
     </div>
 
-    <div class="card" id="step4">
-        <div class="step-number">Stap 4/5</div>
-        <h2>Delen met Studenten (LMS)</h2>
-        <p>Je hebt nu een interactief bestand. Zo deel je het via de leeromgeving:</p>
+    <div class="card" id="s4">
+        <h2>📧 STAP 4: Delen met studenten</h2>
+        <p>Je hoeft niks te programmeren. Kies hoe je de tekst deelt:</p>
         <ul>
-            <li>Ga naar je module in de Elektronische Leeromgeving (bijv. Canvas).</li>
-            <li>Upload het <code>.html</code> bestand als 'Bestand' of 'Leermateriaal'.</li>
-            <li>Studenten kunnen nu op de link klikken en de toets opent direct in hun browser.</li>
+            <li><strong>LMS:</strong> Kopieer de tekst uit de AI en plak deze in een 'Aankondiging' of 'Opdracht' in het LMS.</li>
+            <li><strong>E-mail:</strong> Plak de tekst direct in een mail naar je klas.</li>
+            <li><strong>Presentatie:</strong> Plak de vragen in een PowerPoint voor in de les.</li>
         </ul>
-        <div class="nav-buttons">
-            <button class="btn-prev" onclick="nextStep(3)">Terug</button>
-            <button class="btn-next" onclick="nextStep(5)">Laatste stap</button>
-        </div>
-    </div>
-
-    <div class="card" id="step5">
-        <div class="step-number">Stap 5/5</div>
-        <h2>Alternatief: Delen via E-mail</h2>
-        <p>Geen toegang tot het LMS? E-mail werkt ook direct:</p>
-        <ul>
-            <li>Stuur het <code>.html</code> bestand als bijlage naar de studenten.</li>
-            <li>Instructie: "Download dit bestand en open het met je browser (Chrome/Edge)."</li>
-            <li>Resultaat: De student maakt de toets, de data blijft op hun eigen laptop. 100% AVG-veilig.</li>
-        </ul>
-        <div class="nav-buttons">
-            <button class="btn-prev" onclick="nextStep(4)">Terug</button>
-            <button class="btn-next" onclick="alert('Succes met het bouwen van je eigen toetsen!')">Afronden</button>
-        </div>
+        <button class="btn btn-next" onclick="location.reload()">Begin opnieuw</button>
     </div>
 
     <script>
-        function nextStep(step) {
+        function show(id) {
             document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            document.getElementById('step' + step).classList.add('active');
+            document.getElementById('s' + id).classList.add('active');
         }
-
         function toggleMusic() {
-            const music = document.getElementById('bgMusic');
-            const btn = document.getElementById('musicBtn');
-            if (music.paused) {
-                music.play();
-                btn.innerText = "🔊 Muziek: AAN";
-                btn.classList.remove('off');
-            } else {
-                music.pause();
-                btn.innerText = "🔈 Muziek: UIT";
-                btn.classList.add('off');
-            }
+            const m = document.getElementById('bgMusic');
+            const b = document.getElementById('audioBtn');
+            if(m.paused) { m.play(); b.innerText = "🔊 Muziek: AAN"; b.classList.remove('off'); }
+            else { m.pause(); b.innerText = "🔈 Muziek: UIT"; b.classList.add('off'); }
         }
     </script>
 </body>
