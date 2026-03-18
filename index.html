@@ -2,75 +2,176 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Zelfcorrectie: Opiumwet Artikel 9</title>
+    <title>Politieacademie: Interactieve Toets Opiumwet</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 800px; margin: 20px auto; padding: 20px; background-color: #f0f2f5; }
-        .card { background: white; padding: 25px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        h2 { color: #1a2a6c; border-bottom: 2px solid #1a2a6c; padding-bottom: 10px; }
-        .question-box { margin-bottom: 30px; padding: 15px; background: #fff; border: 1px solid #ddd; border-radius: 8px; }
-        textarea { width: 100%; height: 100px; margin: 10px 0; padding: 10px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; }
+        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 850px; margin: 30px auto; padding: 20px; background-color: #f0f2f5; }
+        .container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-top: 10px solid #003366; }
         
-        .feedback { display: none; margin-top: 15px; padding: 15px; background-color: #e7f3fe; border-left: 6px solid #2196F3; font-style: italic; color: #0c5460; }
-        .correct-header { font-weight: bold; color: #1a2a6c; display: block; margin-bottom: 5px; text-decoration: underline; }
+        /* Header & Info */
+        .header { border-bottom: 2px solid #003366; margin-bottom: 25px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        h1 { color: #003366; margin: 0; font-size: 24px; }
+        .manual-box { background: #fffde7; border: 1px solid #fff59d; padding: 15px; border-radius: 8px; margin-bottom: 30px; font-size: 0.9em; }
         
-        button { background: #1a2a6c; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; }
-        button:hover { background: #0d1a4a; }
-        .btn-reset { background: #6c757d; margin-left: 10px; }
+        /* Secties */
+        .section { margin-bottom: 40px; }
+        h2 { color: #003366; font-size: 20px; border-left: 4px solid #003366; padding-left: 10px; }
+        textarea { width: 100%; height: 120px; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; margin-top: 10px; }
+        
+        /* Vragen */
+        .question-card { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e9ecef; }
+        select { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ced4da; margin-top: 10px; background: white; cursor: pointer; }
+        
+        /* Knoppen */
+        .controls { display: flex; gap: 10px; margin-top: 20px; }
+        .btn-save { background: #003366; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; }
+        .btn-reset { background: #adb5bd; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; }
+        .btn-save:hover { background: #002244; }
+
+        /* Feedback */
+        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 6px; font-weight: bold; }
+        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
+        /* Muziekspeler subtiel */
+        .audio-player { font-size: 12px; color: #666; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Formatieve Toets: Bevoegdheden Opiumwet</h2>
-    <p><em>Casus: Je ziet een voertuig stilstaan en ruikt een sterke hennepgeur. Je vermoedt de aanwezigheid van drugs.</em></p>
-
-    <div class="question-box">
-        <label><strong>1. Welk lid van Artikel 9 geeft je de bevoegdheid om het voertuig te doorzoeken?</strong></label>
-        <textarea id="q1" placeholder="Typ je antwoord..."></textarea>
-        <div id="feedback1" class="feedback">
-            <span class="correct-header">Modelantwoord:</span>
-            Artikel 9, eerste lid, onder a van de Opiumwet. Dit geeft de bevoegdheid om vervoermiddelen te onderzoeken bij een redelijk vermoeden van een strafbaar feit uit deze wet.
+<div class="container">
+    <div class="header">
+        <h1>Toetsing: Bevoegdheden Opiumwet</h1>
+        <div class="audio-player">
+            <span>🔊 Achtergrondmuziek aan</span>
+            <audio id="bgAudio" loop autoplay>
+                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+            </audio>
         </div>
     </div>
 
-    <div class="question-box">
-        <label><strong>2. Mag je de bestuurder direct aan de kleding onderzoeken? Waarom wel/niet?</strong></label>
-        <textarea id="q2" placeholder="Typ je antwoord..."></textarea>
-        <div id="feedback2" class="feedback">
-            <span class="correct-header">Modelantwoord:</span>
-            Nee, niet direct op basis van alleen een 'redelijk vermoeden'. Voor onderzoek aan de kleding (Art. 9 lid 2) zijn 'ernstige bezwaren' nodig tegen de persoon. De hennepgeur uit de auto is vaak onvoldoende voor ernstige bezwaren tegen de persoon zelf, tenzij er meer aanwijzingen zijn.
-        </div>
+    <div class="manual-box">
+        <strong>📖 Handleiding voor docent & student:</strong>
+        <ul>
+            <li><strong>Stap 1:</strong> Vat de bevoegdheden van Artikel 9 (lid 1, 2 en 3) samen in het tekstveld.</li>
+            <li><strong>Stap 2:</strong> Beantwoord de 5 juridische casusvragen.</li>
+            <li><strong>Stap 3:</strong> Klik op 'Controleer & Sla op'. De antwoorden worden <u>lokaal</u> bewaard.</li>
+            <li><strong>Muziek:</strong> De focus-muziek speelt automatisch af voor concentratie.</li>
+        </ul>
     </div>
 
-    <button onclick="checkAnswers()">Controleer antwoorden</button>
-    <button class="btn-reset" onclick="resetForm()">Wis alles</button>
+    <div class="section">
+        <h2>1. Analyse Artikel 9 Opiumwet</h2>
+        <p>Noteer hieronder de essentie van de bevoegdheden zoals omschreven in de wet:</p>
+        <textarea id="notes" placeholder="Typ hier je samenvatting per lid..."></textarea>
+    </div>
+
+    <div class="section">
+        <h2>2. Kennistoets (Formatief)</h2>
+
+        <div class="question-card">
+            <p><strong>Vraag 1:</strong> Welke graad van verdenking is nodig voor het doorzoeken van een voertuig?</p>
+            <select id="q1">
+                <option value="">-- Maak een keuze --</option>
+                <option value="goed">Redelijk vermoeden van een strafbaar feit</option>
+                <option value="fout">Ernstige bezwaren tegen de inzittende</option>
+            </select>
+            <div id="f1" class="feedback"></div>
+        </div>
+
+        <div class="question-card">
+            <p><strong>Vraag 2:</strong> Mag je op basis van dit artikel een woning binnentreden zonder machtiging?</p>
+            <select id="q2">
+                <option value="">-- Maak een keuze --</option>
+                <option value="fout">Ja, mits er een redelijk vermoeden is</option>
+                <option value="goed">Nee, hiervoor is een schriftelijke machtiging nodig (AWBI)</option>
+            </select>
+            <div id="f2" class="feedback"></div>
+        </div>
+
+        <div class="question-card">
+            <p><strong>Vraag 3:</strong> Wat is vereist voor onderzoek aan de kleding (Lid 2)?</p>
+            <select id="q3">
+                <option value="">-- Maak een keuze --</option>
+                <option value="fout">Elke staandehouding is voldoende</option>
+                <option value="goed">Ernstige bezwaren tegen de persoon</option>
+            </select>
+            <div id="f3" class="feedback"></div>
+        </div>
+
+        <div class="question-card">
+            <p><strong>Vraag 4:</strong> De politie vordert uitlevering van een voorwerp. Welk lid is dit?</p>
+            <select id="q4">
+                <option value="">-- Maak een keuze --</option>
+                <option value="fout">Artikel 9, eerste lid</option>
+                <option value="goed">Artikel 9, derde lid</option>
+            </select>
+            <div id="f4" class="feedback"></div>
+        </div>
+
+        <div class="question-card">
+            <p><strong>Vraag 5:</strong> Geldt de bevoegdheid voor inbeslagneming ook voor Lijst II middelen (softdrugs)?</p>
+            <select id="q5">
+                <option value="">-- Maak een keuze --</option>
+                <option value="goed">Ja, de wet maakt hierin voor inbeslagneming geen onderscheid</option>
+                <option value="fout">Nee, alleen voor harddrugs (Lijst I)</option>
+            </select>
+            <div id="f5" class="feedback"></div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-save" onclick="checkAndSave()">Controleer & Sla op</button>
+            <button class="btn-reset" onclick="resetForm()">Wis alles</button>
+        </div>
+    </div>
 </div>
 
 <script>
-    function checkAnswers() {
-        // Toon de feedback velden
-        document.getElementById('feedback1').style.display = 'block';
-        document.getElementById('feedback2').style.display = 'block';
-        
-        // Sla de antwoorden op zodat ze niet verdwijnen bij verversen
-        localStorage.setItem('ans1', document.getElementById('q1').value);
-        localStorage.setItem('ans2', document.getElementById('q2').value);
+    // Audio autoplay workaround voor moderne browsers
+    window.addEventListener('click', function() {
+        const audio = document.getElementById('bgAudio');
+        if (audio.paused) { audio.play(); }
+    }, { once: true });
+
+    function checkAndSave() {
+        // Feedback logica
+        const questions = ['q1', 'q2', 'q3', 'q4', 'q5'];
+        const modelAnswers = {
+            q1: "Correct: Redelijk vermoeden volstaat voor vervoermiddelen.",
+            q2: "Correct: De AWBI blijft van kracht voor woningen.",
+            q3: "Correct: Lid 2 stelt de zware eis van ernstige bezwaren.",
+            q4: "Correct: Lid 3 gaat over uitlevering en inbeslagname.",
+            q5: "Correct: De Opiumwet geldt voor zowel lijst I als lijst II."
+        };
+
+        questions.forEach((q, index) => {
+            const select = document.getElementById(q);
+            const feedback = document.getElementById('f' + (index + 1));
+            feedback.style.display = 'block';
+            
+            if(select.value === 'goed') {
+                feedback.className = 'feedback correct';
+                feedback.innerText = modelAnswers[q];
+            } else {
+                feedback.className = 'feedback incorrect';
+                feedback.innerText = "Niet juist. Let op de specifieke eisen van Artikel 9.";
+            }
+        });
+
+        // Opslaan in LocalStorage
+        localStorage.setItem('opium_toets_notes', document.getElementById('notes').value);
+        alert("Antwoorden gecontroleerd en lokaal opgeslagen op deze computer.");
     }
 
     function resetForm() {
-        if(confirm("Weet je zeker dat je alle invoer wilt wissen?")) {
+        if(confirm("Weet je zeker dat je alle antwoorden en notities wilt wissen?")) {
             localStorage.clear();
             location.reload();
         }
     }
 
-    // Laad opgeslagen data bij opstarten
     window.onload = function() {
-        if(localStorage.getItem('ans1')) {
-            document.getElementById('q1').value = localStorage.getItem('ans1');
-        }
-        if(localStorage.getItem('ans2')) {
-            document.getElementById('q2').value = localStorage.getItem('ans2');
+        if(localStorage.getItem('opium_toets_notes')) {
+            document.getElementById('notes').value = localStorage.getItem('opium_toets_notes');
         }
     }
 </script>
