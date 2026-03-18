@@ -30,8 +30,8 @@
         .btn-next:hover { background: var(--accent); }
         .btn-prev { background: #eee; color: #777; }
 
-        /* Het nieuwe icoon uit de upload */
-        .share-icon-svg { width: 24px; vertical-align: middle; margin: 0 5px; }
+        /* Deel icoon */
+        .share-icon-svg { width: 20px; vertical-align: middle; margin: 0 5px; }
 
         @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
@@ -58,7 +58,7 @@
     </div>
 
     <div class="card" id="s2">
-        <h2>Fase 2: De Prompt invoeren</h2>
+        <h2>Fase 2: De Prompt & Opdrachtregel</h2>
         <p>Een <strong>prompt</strong> is simpelweg de opdracht die u typt. Kies een van de volgende opties:</p>
         
         <p><strong>Optie A: Kennisvragen</strong></p>
@@ -69,7 +69,7 @@
         
         <img src="Screenshot 2026-03-18 10.45.21.png" alt="Prompt invoeren" class="visual-guide-img">
 
-        <div class="nav-buttons nav-footer">
+        <div class="nav-footer">
             <button class="btn btn-prev" onclick="show(1)">Terug</button>
             <button class="btn btn-next" onclick="show(3)">Volgende stap</button>
         </div>
@@ -78,4 +78,52 @@
     <div class="card" id="s3">
         <h2>Fase 3: De link delen</h2>
         <p>Zodra de AI de toets heeft gemaakt, gebruikt u het <strong>delen-teken</strong> 
-            <img src="Screenshot 2026-03-18 10.46.09.png" class="share-icon-svg" alt
+            <img src="Screenshot 2026-03-18 10.46.09.png" class="share-icon-svg" alt="Deel icoon"> om een link te maken:
+        </p>
+        
+        <ul>
+            <li>Klik op het icoon onder het antwoord van de AI.</li>
+            <li>Kies voor "Openbare link maken" of "Link delen".</li>
+            <li>Kopieer de link die verschijnt.</li>
+        </ul>
+
+        <div class="nav-footer">
+            <button class="btn btn-prev" onclick="show(2)">Terug</button>
+            <button class="btn btn-next" onclick="show(4)">Laatste stap</button>
+        </div>
+    </div>
+
+    <div class="card" id="s4">
+        <h2>Fase 4: Publicatie</h2>
+        <p>Plak de gekopieerde link direct in het LMS of in een e-mail naar de studenten.</p>
+        <p>De student klikt op de link en krijgt direct toegang tot de toets. U hoeft geen bestanden te versturen of code te kopiëren.</p>
+        
+        <div class="nav-footer">
+            <button class="btn btn-prev" onclick="show(3)">Terug</button>
+            <button class="btn btn-next" onclick="location.reload()">Beëindigen</button>
+        </div>
+    </div>
+
+    <script>
+        function show(id) {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(c => c.classList.remove('active'));
+            document.getElementById('s' + id).classList.add('active');
+        }
+
+        function toggleMusic() {
+            const m = document.getElementById('bgMusic');
+            const b = document.getElementById('audioBtn');
+            if(m.paused) { 
+                m.play(); 
+                b.innerText = "Audio: AAN"; 
+                b.style.background = "#e3f2fd";
+            } else { 
+                m.pause(); 
+                b.innerText = "Audio: UIT"; 
+                b.style.background = "white";
+            }
+        }
+    </script>
+</body>
+</html>
