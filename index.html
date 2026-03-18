@@ -2,60 +2,87 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Snelgids: Toets maken met AI</title>
+    <title>Protocol: Educatieve Toetsing via AI</title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #001a33; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; color: #333; width: 600px; padding: 40px; border-radius: 15px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .active { display: flex; }
-        h2 { color: #003366; margin-top: 0; }
-        .warning { background: #ffeded; color: #cc0000; padding: 15px; border-left: 5px solid #cc0000; font-weight: bold; margin-bottom: 20px; }
-        .btn { padding: 12px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; }
-        .btn-next { background: #003366; color: white; }
-        .btn-audio { position: fixed; top: 20px; left: 20px; background: #28a745; color: white; z-index: 100; }
-        .btn-audio.off { background: #dc3545; }
-        code { background: #eee; padding: 2px 5px; border-radius: 3px; }
+        :root { --primary: #001f3f; --accent: #004080; --text: #333; --bg: #f4f7f9; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        
+        /* Audio Control */
+        .audio-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; }
+        .btn-audio { background: white; border: 1px solid #ccc; padding: 8px 15px; cursor: pointer; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .card { background: white; width: 700px; min-height: 400px; padding: 50px; border-radius: 4px; display: none; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); }
+        .active { display: flex; animation: fade 0.4s ease-in-out; }
+        
+        h2 { color: var(--primary); font-weight: 300; text-transform: uppercase; letter-spacing: 2px; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px; }
+        .alert-box { background: #fdf2f2; border: 1px solid #f1abab; color: #a94442; padding: 20px; margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
+        p, li { font-size: 16px; line-height: 1.7; color: #555; }
+        
+        .nav-footer { margin-top: auto; display: flex; justify-content: flex-end; gap: 15px; padding-top: 30px; }
+        .btn { padding: 12px 30px; border: none; border-radius: 2px; cursor: pointer; font-size: 14px; text-transform: uppercase; transition: 0.3s; }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-next:hover { background: var(--accent); }
+        .btn-prev { background: #eee; color: #777; }
+
+        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
     </style>
 </head>
 <body>
 
-    <button id="audioBtn" class="btn-audio" onclick="toggleMusic()">🔊 Muziek: UIT</button>
-    <audio id="bgMusic" loop>
-        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
-    </audio>
+    <div class="audio-nav">
+        <button id="audioBtn" class="btn-audio" onclick="toggleMusic()">Focus Audio: UIT</button>
+        <audio id="bgMusic" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
+        </audio>
+    </div>
 
     <div class="card active" id="s1">
-        <h2>⚠️ STAP 1: Veiligheid</h2>
-        <div class="warning">
-            GEBRUIK NOOIT JE POLITIE-ACCOUNT VOOR AI!
+        <h2>Fase 1: Beveiligingsprotocol</h2>
+        <div class="alert-box">
+            <strong>WAARSCHUWING:</strong> Gebruik voor AI-toepassingen uitsluitend een privaat account. Het gebruik van politie-inloggegevens of het invoeren van gerubriceerde informatie is strikt verboden.
         </div>
-        <p>Maak een <strong>privé-account</strong> aan (bijv. een persoonlijke Gmail) voor ChatGPT of Gemini.</p>
-        <p>Deel <strong>geen</strong> namen van verdachten of interne korpsinformatie. Gebruik alleen openbare wetteksten.</p>
-        <button class="btn btn-next" onclick="show(2)">Ik begrijp het, volgende stap</button>
+        <p>Zorg dat u bent ingelogd op een persoonlijke omgeving (bijv. Gmail) voordat u de opdracht invoert.</p>
+        <div class="nav-footer">
+            <button class="btn btn-next" onclick="show(2)">Accepteren en doorgaan</button>
+        </div>
     </div>
 
     <div class="card" id="s2">
-        <h2>📝 STAP 2: Vraag het de AI</h2>
-        <p>Open de AI en typ simpelweg wat je nodig hebt. Bijvoorbeeld:</p>
-        <p><em>"Maak 5 uitdagende meerkeuzevragen voor politiestudenten over Artikel 9 van de Opiumwet. Geef daarna direct de juiste antwoorden met uitleg."</em></p>
-        <button class="btn btn-next" onclick="show(3)">Volgende stap</button>
+        <h2>Fase 2: Opdrachtformulering</h2>
+        <p>Voer in de AI (Gemini/ChatGPT) een specifieke instructie in voor de formatieve toetsing. Gebruik de volgende structuur:</p>
+        <p><em>"Stel een formatieve toets samen voor politiestudenten over Artikel 9 van de Opiumwet. De toets moet bestaan uit 5 vragen met directe feedback en juridische onderbouwing."</em></p>
+        <div class="nav-buttons nav-footer">
+            <button class="btn btn-prev" onclick="show(1)">Terug</button>
+            <button class="btn btn-next" onclick="show(3)">Volgende stap</button>
+        </div>
     </div>
 
     <div class="card" id="s3">
-        <h2>✅ STAP 3: De AI geeft de toets</h2>
-        <p>De AI (zoals Gemini) zet de vragen en antwoorden direct voor je op het scherm.</p>
-        <p><strong>Check de inhoud:</strong> Klopt de juridische uitleg? Pas het aan waar nodig door simpelweg tegen de AI te praten.</p>
-        <button class="btn btn-next" onclick="show(4)">Laatste stap: Delen</button>
+        <h2>Fase 3: Distributie via Deel-functie</h2>
+        <p>De meest efficiënte methode om de toets bij de student te krijgen, is het gebruik van de <strong>Deel-functie</strong> binnen de AI-omgeving:</p>
+        <ul>
+            <li>Klik onderaan het antwoord op het <strong>delen-icoon</strong> (vaak een pijltje of drie bolletjes).</li>
+            <li>Selecteer "Openbare link maken" of "Share link".</li>
+            <li>Kopieer de gegenereerde URL.</li>
+        </ul>
+        <div class="nav-buttons nav-footer">
+            <button class="btn btn-prev" onclick="show(2)">Terug</button>
+            <button class="btn btn-next" onclick="show(4)">Volgende stap</button>
+        </div>
     </div>
 
     <div class="card" id="s4">
-        <h2>📧 STAP 4: Delen met studenten</h2>
-        <p>Je hoeft niks te programmeren. Kies hoe je de tekst deelt:</p>
+        <h2>Fase 4: Publicatie</h2>
+        <p>Nu u de unieke link van de toets heeft, kunt u deze beschikbaar stellen aan de studenten:</p>
         <ul>
-            <li><strong>LMS:</strong> Kopieer de tekst uit de AI en plak deze in een 'Aankondiging' of 'Opdracht' in het LMS.</li>
-            <li><strong>E-mail:</strong> Plak de tekst direct in een mail naar je klas.</li>
-            <li><strong>Presentatie:</strong> Plak de vragen in een PowerPoint voor in de les.</li>
+            <li><strong>LMS:</strong> Plaats de link in de desbetreffende module of als aankondiging.</li>
+            <li><strong>Direct:</strong> Deel de link via de chatfunctie tijdens een digitale les of via e-mail.</li>
         </ul>
-        <button class="btn btn-next" onclick="location.reload()">Begin opnieuw</button>
+        <p>De student opent de link en krijgt direct toegang tot de interactieve toetsing zonder dat u bestanden hoeft te versturen.</p>
+        <div class="nav-buttons nav-footer">
+            <button class="btn btn-prev" onclick="show(3)">Terug</button>
+            <button class="btn btn-next" onclick="location.reload()">Sessie beëindigen</button>
+        </div>
     </div>
 
     <script>
@@ -66,8 +93,8 @@
         function toggleMusic() {
             const m = document.getElementById('bgMusic');
             const b = document.getElementById('audioBtn');
-            if(m.paused) { m.play(); b.innerText = "🔊 Muziek: AAN"; b.classList.remove('off'); }
-            else { m.pause(); b.innerText = "🔈 Muziek: UIT"; b.classList.add('off'); }
+            if(m.paused) { m.play(); b.innerText = "Focus Audio: AAN"; }
+            else { m.pause(); b.innerText = "Focus Audio: UIT"; }
         }
     </script>
 </body>
