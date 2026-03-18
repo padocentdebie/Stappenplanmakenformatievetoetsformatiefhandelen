@@ -5,26 +5,35 @@
     <title>Protocol: Educatieve Toetsing via AI</title>
     <style>
         :root { --primary: #001f3f; --accent: #004080; --text: #333; --bg: #f4f7f9; }
-        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
         
         /* Audio Control */
         .audio-nav { position: fixed; top: 20px; left: 20px; z-index: 1000; }
-        .btn-audio { background: white; border: 1px solid #ccc; padding: 8px 15px; cursor: pointer; font-size: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-audio { background: white; border: 1px solid #ccc; padding: 8px 15px; cursor: pointer; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #555; }
         
-        .card { background: white; width: 700px; min-height: 400px; padding: 50px; border-radius: 4px; display: none; flex-direction: column; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); }
+        /* Card & Layout */
+        .card { background: white; width: 750px; min-height: 550px; padding: 50px; border-radius: 4px; display: none; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-top: 5px solid var(--primary); position: relative; }
         .active { display: flex; animation: fade 0.4s ease-in-out; }
         
-        h2 { color: var(--primary); font-weight: 300; text-transform: uppercase; letter-spacing: 2px; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px; }
-        .alert-box { background: #fdf2f2; border: 1px solid #f1abab; color: #a94442; padding: 20px; margin-bottom: 25px; font-size: 14px; line-height: 1.6; }
-        p, li { font-size: 16px; line-height: 1.7; color: #555; }
+        h2 { color: var(--primary); font-weight: 300; text-transform: uppercase; letter-spacing: 2px; margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 15px; font-size: 20px; }
+        .alert-box { background: #fdf2f2; border: 1px solid #f1abab; color: #a94442; padding: 20px; margin-bottom: 15px; font-size: 14px; line-height: 1.6; }
+        p, li { font-size: 15px; line-height: 1.6; color: #555; margin-bottom: 10px; }
+        code { background: #f1f3f5; padding: 8px; border-radius: 4px; font-family: Consolas, monospace; font-size: 0.9em; display: block; border: 1px solid #e1e4e8; margin: 10px 0; color: #003366; }
+
+        /* Visuele Gids */
+        .visual-guide-img { width: 100%; height: auto; border: 1px solid #ccc; margin: 15px 0; display: block; max-height: 250px; object-fit: contain; background: #fff; }
         
-        .nav-footer { margin-top: auto; display: flex; justify-content: flex-end; gap: 15px; padding-top: 30px; }
-        .btn { padding: 12px 30px; border: none; border-radius: 2px; cursor: pointer; font-size: 14px; text-transform: uppercase; transition: 0.3s; }
+        /* Navigatie */
+        .nav-footer { margin-top: auto; display: flex; justify-content: flex-end; gap: 15px; padding-top: 20px; border-top: 1px solid #eee; }
+        .btn { padding: 12px 30px; border: none; border-radius: 2px; cursor: pointer; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
         .btn-next { background: var(--primary); color: white; }
         .btn-next:hover { background: var(--accent); }
         .btn-prev { background: #eee; color: #777; }
 
-        @keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+        /* Het nieuwe icoon uit de upload */
+        .share-icon-svg { width: 24px; vertical-align: middle; margin: 0 5px; }
+
+        @keyframes fade { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -39,18 +48,27 @@
     <div class="card active" id="s1">
         <h2>Fase 1: Beveiligingsprotocol</h2>
         <div class="alert-box">
-            <strong>WAARSCHUWING:</strong> Gebruik voor AI-toepassingen uitsluitend een privaat account. Het gebruik van politie-inloggegevens of het invoeren van gerubriceerde informatie is strikt verboden.
+            <strong>BELANGRIJK:</strong> Gebruik <u>nooit</u> je politie-account voor AI. Gebruik een privé-account (bijv. Gmail) en voer geen geheime informatie in.
         </div>
-        <p>Zorg dat u bent ingelogd op een persoonlijke omgeving (bijv. Gmail) voordat u de opdracht invoert.</p>
+        <img src="afbeelding_beveiliging.png" alt="Beveiliging" class="visual-guide-img">
+        <p>Zorg dat u bent ingelogd op uw persoonlijke omgeving voordat u verder gaat.</p>
         <div class="nav-footer">
-            <button class="btn btn-next" onclick="show(2)">Accepteren en doorgaan</button>
+            <button class="btn btn-next" onclick="show(2)">Start gids</button>
         </div>
     </div>
 
     <div class="card" id="s2">
-        <h2>Fase 2: Opdrachtformulering</h2>
-        <p>Voer in de AI (Gemini/ChatGPT) een specifieke instructie in voor de formatieve toetsing. Gebruik de volgende structuur:</p>
-        <p><em>"Stel een formatieve toets samen voor politiestudenten over Artikel 9 van de Opiumwet. De toets moet bestaan uit 5 vragen met directe feedback en juridische onderbouwing."</em></p>
+        <h2>Fase 2: De Prompt invoeren</h2>
+        <p>Een <strong>prompt</strong> is simpelweg de opdracht die u typt. Kies een van de volgende opties:</p>
+        
+        <p><strong>Optie A: Kennisvragen</strong></p>
+        <code>"Maak een korte toets voor politiestudenten over Artikel 9 van de Opiumwet. Geef 5 vragen met directe antwoorden en uitleg."</code>
+        
+        <p><strong>Optie B: Praktijkcasus (Scenario)</strong></p>
+        <code>"Schrijf een casus over een voertuigcontrole waarbij hennepgeur wordt waargenomen. Stel 3 vragen over de juiste bevoegdheden volgens Artikel 9 Opiumwet en geef de juridische uitwerking."</code>
+        
+        <img src="afbeelding_prompt.png" alt="Prompt invoeren" class="visual-guide-img">
+
         <div class="nav-buttons nav-footer">
             <button class="btn btn-prev" onclick="show(1)">Terug</button>
             <button class="btn btn-next" onclick="show(3)">Volgende stap</button>
@@ -58,44 +76,6 @@
     </div>
 
     <div class="card" id="s3">
-        <h2>Fase 3: Distributie via Deel-functie</h2>
-        <p>De meest efficiënte methode om de toets bij de student te krijgen, is het gebruik van de <strong>Deel-functie</strong> binnen de AI-omgeving:</p>
-        <ul>
-            <li>Klik onderaan het antwoord op het <strong>delen-icoon</strong> (vaak een pijltje of drie bolletjes).</li>
-            <li>Selecteer "Openbare link maken" of "Share link".</li>
-            <li>Kopieer de gegenereerde URL.</li>
-        </ul>
-        <div class="nav-buttons nav-footer">
-            <button class="btn btn-prev" onclick="show(2)">Terug</button>
-            <button class="btn btn-next" onclick="show(4)">Volgende stap</button>
-        </div>
-    </div>
-
-    <div class="card" id="s4">
-        <h2>Fase 4: Publicatie</h2>
-        <p>Nu u de unieke link van de toets heeft, kunt u deze beschikbaar stellen aan de studenten:</p>
-        <ul>
-            <li><strong>LMS:</strong> Plaats de link in de desbetreffende module of als aankondiging.</li>
-            <li><strong>Direct:</strong> Deel de link via de chatfunctie tijdens een digitale les of via e-mail.</li>
-        </ul>
-        <p>De student opent de link en krijgt direct toegang tot de interactieve toetsing zonder dat u bestanden hoeft te versturen.</p>
-        <div class="nav-buttons nav-footer">
-            <button class="btn btn-prev" onclick="show(3)">Terug</button>
-            <button class="btn btn-next" onclick="location.reload()">Sessie beëindigen</button>
-        </div>
-    </div>
-
-    <script>
-        function show(id) {
-            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
-            document.getElementById('s' + id).classList.add('active');
-        }
-        function toggleMusic() {
-            const m = document.getElementById('bgMusic');
-            const b = document.getElementById('audioBtn');
-            if(m.paused) { m.play(); b.innerText = "Focus Audio: AAN"; }
-            else { m.pause(); b.innerText = "Focus Audio: UIT"; }
-        }
-    </script>
-</body>
-</html>
+        <h2>Fase 3: De link delen</h2>
+        <p>Zodra de AI de toets heeft gemaakt, gebruikt u het <strong>delen-teken</strong> 
+            <img src="Screenshot 2026-03-18 10.46.09.png" class="share-icon-svg" alt
