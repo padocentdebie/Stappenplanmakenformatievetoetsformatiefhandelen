@@ -2,179 +2,130 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Politieacademie: Interactieve Toets Opiumwet</title>
+    <title>Stappenplan: AI-Toets Ontwikkeling</title>
     <style>
-        body { font-family: 'Segoe UI', Arial, sans-serif; line-height: 1.6; color: #333; max-width: 850px; margin: 30px auto; padding: 20px; background-color: #f0f2f5; }
-        .container { background: white; padding: 40px; border-radius: 15px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); border-top: 10px solid #003366; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #001a33; color: white; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; overflow: hidden; }
+        .card { background: #ffffff; color: #333; width: 80%; max-width: 800px; min-height: 450px; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.5); display: none; position: relative; flex-direction: column; justify-content: center; }
+        .active { display: flex; animation: fadeIn 0.5s; }
         
-        /* Header & Info */
-        .header { border-bottom: 2px solid #003366; margin-bottom: 25px; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        h1 { color: #003366; margin: 0; font-size: 24px; }
-        .manual-box { background: #fffde7; border: 1px solid #fff59d; padding: 15px; border-radius: 8px; margin-bottom: 30px; font-size: 0.9em; }
+        h2 { color: #003366; border-bottom: 2px solid #003366; padding-bottom: 10px; }
+        .warning { background: #ffeded; border-left: 5px solid #cc0000; padding: 15px; color: #990000; font-weight: bold; margin: 20px 0; }
+        .step-number { position: absolute; top: 20px; right: 30px; font-size: 1.2em; color: #ccc; font-weight: bold; }
         
-        /* Secties */
-        .section { margin-bottom: 40px; }
-        h2 { color: #003366; font-size: 20px; border-left: 4px solid #003366; padding-left: 10px; }
-        textarea { width: 100%; height: 120px; padding: 12px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; font-family: inherit; margin-top: 10px; }
+        .nav-buttons { margin-top: 30px; display: flex; gap: 10px; }
+        button { padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; font-size: 16px; }
+        .btn-next { background: #003366; color: white; }
+        .btn-prev { background: #6c757d; color: white; }
         
-        /* Vragen */
-        .question-card { background: #f8f9fa; padding: 20px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #e9ecef; }
-        select { width: 100%; padding: 12px; border-radius: 6px; border: 1px solid #ced4da; margin-top: 10px; background: white; cursor: pointer; }
-        
-        /* Knoppen */
-        .controls { display: flex; gap: 10px; margin-top: 20px; }
-        .btn-save { background: #003366; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; flex: 1; }
-        .btn-reset { background: #adb5bd; color: white; padding: 12px 25px; border: none; border-radius: 6px; cursor: pointer; }
-        .btn-save:hover { background: #002244; }
+        .audio-nav { position: fixed; top: 20px; left: 20px; background: rgba(255,255,255,0.1); padding: 10px; border-radius: 10px; }
+        .btn-audio { background: #28a745; color: white; font-size: 12px; }
+        .btn-audio.off { background: #dc3545; }
 
-        /* Feedback */
-        .feedback { display: none; margin-top: 15px; padding: 15px; border-radius: 6px; font-weight: bold; }
-        .correct { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .incorrect { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
-
-        /* Muziekspeler subtiel */
-        .audio-player { font-size: 12px; color: #666; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        ul { line-height: 1.8; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>Toetsing: Bevoegdheden Opiumwet</h1>
-        <div class="audio-player">
-            <span>🔊 Achtergrondmuziek aan</span>
-            <audio id="bgAudio" loop autoplay>
-                <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3" type="audio/mpeg">
-            </audio>
-        </div>
+    <div class="audio-nav">
+        <button id="musicBtn" class="btn-audio" onclick="toggleMusic()">🔊 Muziek: AAN</button>
+        <audio id="bgMusic" loop>
+            <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3" type="audio/mpeg">
+        </audio>
     </div>
 
-    <div class="manual-box">
-        <strong>📖 Handleiding voor docent & student:</strong>
+    <div class="card active" id="step1">
+        <div class="step-number">Stap 1/5</div>
+        <h2>⚠️ Veiligheid & Privacy</h2>
+        <div class="warning">
+            BELANGRIJK: Maak voor AI-gebruik (zoals ChatGPT of Gemini) een privé-account aan dat GEEN enkele koppeling heeft met je politie-e-mail of politiesystemen.
+        </div>
         <ul>
-            <li><strong>Stap 1:</strong> Vat de bevoegdheden van Artikel 9 (lid 1, 2 en 3) samen in het tekstveld.</li>
-            <li><strong>Stap 2:</strong> Beantwoord de 5 juridische casusvragen.</li>
-            <li><strong>Stap 3:</strong> Klik op 'Controleer & Sla op'. De antwoorden worden <u>lokaal</u> bewaard.</li>
-            <li><strong>Muziek:</strong> De focus-muziek speelt automatisch af voor concentratie.</li>
+            <li>Gebruik een privé Gmail of Outlook adres.</li>
+            <li>Voer nooit namen van verdachten, operationele details of geheime stukken in.</li>
+            <li>Gebruik AI alleen voor openbare wetteksten (zoals de Opiumwet).</li>
         </ul>
-    </div>
-
-    <div class="section">
-        <h2>1. Analyse Artikel 9 Opiumwet</h2>
-        <p>Noteer hieronder de essentie van de bevoegdheden zoals omschreven in de wet:</p>
-        <textarea id="notes" placeholder="Typ hier je samenvatting per lid..."></textarea>
-    </div>
-
-    <div class="section">
-        <h2>2. Kennistoets (Formatief)</h2>
-
-        <div class="question-card">
-            <p><strong>Vraag 1:</strong> Welke graad van verdenking is nodig voor het doorzoeken van een voertuig?</p>
-            <select id="q1">
-                <option value="">-- Maak een keuze --</option>
-                <option value="goed">Redelijk vermoeden van een strafbaar feit</option>
-                <option value="fout">Ernstige bezwaren tegen de inzittende</option>
-            </select>
-            <div id="f1" class="feedback"></div>
-        </div>
-
-        <div class="question-card">
-            <p><strong>Vraag 2:</strong> Mag je op basis van dit artikel een woning binnentreden zonder machtiging?</p>
-            <select id="q2">
-                <option value="">-- Maak een keuze --</option>
-                <option value="fout">Ja, mits er een redelijk vermoeden is</option>
-                <option value="goed">Nee, hiervoor is een schriftelijke machtiging nodig (AWBI)</option>
-            </select>
-            <div id="f2" class="feedback"></div>
-        </div>
-
-        <div class="question-card">
-            <p><strong>Vraag 3:</strong> Wat is vereist voor onderzoek aan de kleding (Lid 2)?</p>
-            <select id="q3">
-                <option value="">-- Maak een keuze --</option>
-                <option value="fout">Elke staandehouding is voldoende</option>
-                <option value="goed">Ernstige bezwaren tegen de persoon</option>
-            </select>
-            <div id="f3" class="feedback"></div>
-        </div>
-
-        <div class="question-card">
-            <p><strong>Vraag 4:</strong> De politie vordert uitlevering van een voorwerp. Welk lid is dit?</p>
-            <select id="q4">
-                <option value="">-- Maak een keuze --</option>
-                <option value="fout">Artikel 9, eerste lid</option>
-                <option value="goed">Artikel 9, derde lid</option>
-            </select>
-            <div id="f4" class="feedback"></div>
-        </div>
-
-        <div class="question-card">
-            <p><strong>Vraag 5:</strong> Geldt de bevoegdheid voor inbeslagneming ook voor Lijst II middelen (softdrugs)?</p>
-            <select id="q5">
-                <option value="">-- Maak een keuze --</option>
-                <option value="goed">Ja, de wet maakt hierin voor inbeslagneming geen onderscheid</option>
-                <option value="fout">Nee, alleen voor harddrugs (Lijst I)</option>
-            </select>
-            <div id="f5" class="feedback"></div>
-        </div>
-
-        <div class="controls">
-            <button class="btn-save" onclick="checkAndSave()">Controleer & Sla op</button>
-            <button class="btn-reset" onclick="resetForm()">Wis alles</button>
+        <div class="nav-buttons">
+            <button class="btn-next" onclick="nextStep(2)">Ik begrijp het, start de gids</button>
         </div>
     </div>
-</div>
 
-<script>
-    // Audio autoplay workaround voor moderne browsers
-    window.addEventListener('click', function() {
-        const audio = document.getElementById('bgAudio');
-        if (audio.paused) { audio.play(); }
-    }, { once: true });
+    <div class="card" id="step2">
+        <div class="step-number">Stap 2/5</div>
+        <h2>Ontwerp je Toets (De Prompt)</h2>
+        <p>Open je AI-tool en geef een duidelijke opdracht. Gebruik de "Rol-methode":</p>
+        <p><em>"Je bent een expert docent op de politieschool. Schrijf een HTML-code voor een formatieve toets over Artikel 9 Opiumwet. Gebruik LocalStorage om antwoorden te bewaren en voeg modelantwoorden toe voor zelfcorrectie."</em></p>
+        <div class="nav-buttons">
+            <button class="btn-prev" onclick="nextStep(1)">Terug</button>
+            <button class="btn-next" onclick="nextStep(3)">Volgende stap</button>
+        </div>
+    </div>
 
-    function checkAndSave() {
-        // Feedback logica
-        const questions = ['q1', 'q2', 'q3', 'q4', 'q5'];
-        const modelAnswers = {
-            q1: "Correct: Redelijk vermoeden volstaat voor vervoermiddelen.",
-            q2: "Correct: De AWBI blijft van kracht voor woningen.",
-            q3: "Correct: Lid 2 stelt de zware eis van ernstige bezwaren.",
-            q4: "Correct: Lid 3 gaat over uitlevering en inbeslagname.",
-            q5: "Correct: De Opiumwet geldt voor zowel lijst I als lijst II."
-        };
+    <div class="card" id="step3">
+        <div class="step-number">Stap 3/5</div>
+        <h2>Van Code naar Bestand</h2>
+        <p>Zodra de AI de code genereert, moet je deze 'tot leven' wekken:</p>
+        <ul>
+            <li>Kopieer de volledige code uit het AI-venster.</li>
+            <li>Open <strong>Kladblok</strong> (Notepad) op je computer.</li>
+            <li>Plak de code en sla het bestand op als: <code>toets.html</code>.</li>
+            <li><strong>Cruciaal:</strong> Zorg dat de naam eindigt op .html (niet op .txt).</li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-prev" onclick="nextStep(2)">Terug</button>
+            <button class="btn-next" onclick="nextStep(4)">Volgende stap</button>
+        </div>
+    </div>
 
-        questions.forEach((q, index) => {
-            const select = document.getElementById(q);
-            const feedback = document.getElementById('f' + (index + 1));
-            feedback.style.display = 'block';
-            
-            if(select.value === 'goed') {
-                feedback.className = 'feedback correct';
-                feedback.innerText = modelAnswers[q];
+    <div class="card" id="step4">
+        <div class="step-number">Stap 4/5</div>
+        <h2>Delen met Studenten (LMS)</h2>
+        <p>Je hebt nu een interactief bestand. Zo deel je het via de leeromgeving:</p>
+        <ul>
+            <li>Ga naar je module in de Elektronische Leeromgeving (bijv. Canvas).</li>
+            <li>Upload het <code>.html</code> bestand als 'Bestand' of 'Leermateriaal'.</li>
+            <li>Studenten kunnen nu op de link klikken en de toets opent direct in hun browser.</li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-prev" onclick="nextStep(3)">Terug</button>
+            <button class="btn-next" onclick="nextStep(5)">Laatste stap</button>
+        </div>
+    </div>
+
+    <div class="card" id="step5">
+        <div class="step-number">Stap 5/5</div>
+        <h2>Alternatief: Delen via E-mail</h2>
+        <p>Geen toegang tot het LMS? E-mail werkt ook direct:</p>
+        <ul>
+            <li>Stuur het <code>.html</code> bestand als bijlage naar de studenten.</li>
+            <li>Instructie: "Download dit bestand en open het met je browser (Chrome/Edge)."</li>
+            <li>Resultaat: De student maakt de toets, de data blijft op hun eigen laptop. 100% AVG-veilig.</li>
+        </ul>
+        <div class="nav-buttons">
+            <button class="btn-prev" onclick="nextStep(4)">Terug</button>
+            <button class="btn-next" onclick="alert('Succes met het bouwen van je eigen toetsen!')">Afronden</button>
+        </div>
+    </div>
+
+    <script>
+        function nextStep(step) {
+            document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        function toggleMusic() {
+            const music = document.getElementById('bgMusic');
+            const btn = document.getElementById('musicBtn');
+            if (music.paused) {
+                music.play();
+                btn.innerText = "🔊 Muziek: AAN";
+                btn.classList.remove('off');
             } else {
-                feedback.className = 'feedback incorrect';
-                feedback.innerText = "Niet juist. Let op de specifieke eisen van Artikel 9.";
+                music.pause();
+                btn.innerText = "🔈 Muziek: UIT";
+                btn.classList.add('off');
             }
-        });
-
-        // Opslaan in LocalStorage
-        localStorage.setItem('opium_toets_notes', document.getElementById('notes').value);
-        alert("Antwoorden gecontroleerd en lokaal opgeslagen op deze computer.");
-    }
-
-    function resetForm() {
-        if(confirm("Weet je zeker dat je alle antwoorden en notities wilt wissen?")) {
-            localStorage.clear();
-            location.reload();
         }
-    }
-
-    window.onload = function() {
-        if(localStorage.getItem('opium_toets_notes')) {
-            document.getElementById('notes').value = localStorage.getItem('opium_toets_notes');
-        }
-    }
-</script>
-
+    </script>
 </body>
 </html>
